@@ -1,10 +1,5 @@
 <script lang="ts">
 	export let data;
-
-	// 50 ... 100
-	// 1 ... 8
-
-	// ((100 - 50) / 8) * weight;
 </script>
 
 <a href="/">Zurück zur Startseite</a>
