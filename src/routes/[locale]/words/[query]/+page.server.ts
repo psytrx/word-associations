@@ -1,14 +1,3 @@
-/*
-https://api.wordassociations.net/associations/v1.0/json/search?
-apikey=<API key>
- & text=<word or phrase>
- & lang=<language>
- & [type=<result type>]
- & [limit=<maximum number of results>]
- & [pos=<parts of speech>]
- & [indent=<yes or no>]
-*/
-
 import { WORDASSOCIATIONS_API_KEY } from '$env/static/private';
 
 interface AssociationsResponseItem {
@@ -26,15 +15,16 @@ const posLimits = {
 	adjective: 7
 };
 
+const lowercaseGroups = ['verb', 'adjective', 'adverb'];
+
 export async function load({ params }) {
 	const associations = await getAssociations(params.query);
 	const groupedByPos = groupByPos(associations);
 
-	groupedByPos['verb']?.forEach((item) => {
-		item.item = item.item.toLowerCase();
-	});
-	groupedByPos['adjective']?.forEach((item) => {
-		item.item = item.item.toLowerCase();
+	lowercaseGroups.forEach((key) => {
+		groupedByPos[key]?.forEach((item) => {
+			item.item = item.item.toLowerCase();
+		});
 	});
 
 	Object.entries(groupedByPos).forEach(([key, items]) => {
