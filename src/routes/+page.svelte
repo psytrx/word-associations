@@ -1,10 +1,11 @@
-<div>
-	<input type="text" value="Hund" />
+<form action="/de/words" method="post">
+	<label for="query">Suchbegriff eingeben:</label>
+	<input type="text" id="query" name="query" value="Hund" />
 	<button>Suchen</button>
-</div>
+</form>
 
 <style>
-	div {
+	form {
 		min-height: 100vh;
 		width: 100%;
 		display: flex;
