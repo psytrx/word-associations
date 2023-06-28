@@ -1,5 +1,10 @@
 <script lang="ts">
 	export let data;
+
+	// 50 ... 100
+	// 1 ... 8
+
+	// ((100 - 50) / 8) * weight;
 </script>
 
 <h1>{data.query}</h1>
@@ -10,8 +15,11 @@
 			{key}
 			<ul>
 				{#each items as item}
+					{@const size = Math.floor(
+						Math.max(1, Math.min(8, ((100 - 50) / 8) * (item.weight / 100)))
+					)}
 					<li>
-						<a href="/{data.locale}/words/{item.item}">
+						<a href="/{data.locale}/words/{item.item}" style:font-size="var(--font-size-{size})">
 							{item.item}
 						</a>
 					</li>
