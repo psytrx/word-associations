@@ -1,6 +1,6 @@
 <form action="/de/words" method="post">
 	<label for="query">Suchbegriff eingeben:</label>
-	<input type="text" id="query" name="query" value="Hund" />
+	<input type="text" id="query" name="query" placeholder="Hund" />
 	<button>Suchen</button>
 </form>
 

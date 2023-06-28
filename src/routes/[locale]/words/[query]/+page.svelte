@@ -7,6 +7,8 @@
 	// ((100 - 50) / 8) * weight;
 </script>
 
+<a href="/">Zurück zur Startseite</a>
+
 <h1>{data.query}</h1>
 
 <ul>
