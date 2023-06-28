@@ -32,8 +32,6 @@ export async function load({ params }) {
 }
 
 function groupByPos(item: AssociationsResponseItem) {
-	// const groups = [{ key: 'foo', items: associations.items }];
-
 	const groups: Record<string, AssociationsResponseItem['items']> = {};
 	item.items.forEach((item) => {
 		const groupItems = groups[item.pos] || [];
