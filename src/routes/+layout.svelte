@@ -9,6 +9,6 @@
 <style>
 	div {
 		margin: 0 auto;
-		max-width: min(calc(100% - var(--size-4)), 80ch);
+		max-width: min(calc(100% - var(--size-4)), 100ch);
 	}
 </style>
