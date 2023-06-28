@@ -20,6 +20,12 @@ interface AssociationsResponseItem {
 	}[];
 }
 
+const posLimits = {
+	verb: 5,
+	noun: 10,
+	adjective: 7
+};
+
 export async function load({ params }) {
 	const associations = await getAssociations(params.query);
 	const groupedByPos = groupByPos(associations);
@@ -29,6 +35,12 @@ export async function load({ params }) {
 	});
 	groupedByPos['adjective']?.forEach((item) => {
 		item.item = item.item.toLowerCase();
+	});
+
+	Object.entries(groupedByPos).forEach(([key, items]) => {
+		groupedByPos[key] = items
+			.sort((a, b) => b.weight - a.weight)
+			.slice(0, posLimits[key as keyof typeof posLimits]);
 	});
 
 	return {
@@ -57,7 +69,7 @@ async function getAssociations(query: string) {
 		text: query,
 		lang: 'de',
 		type: 'stimulus',
-		limit: '10'
+		limit: '100'
 	});
 	const url = `https://api.wordassociations.net/associations/v1.0/json/search?${params}`;
 
