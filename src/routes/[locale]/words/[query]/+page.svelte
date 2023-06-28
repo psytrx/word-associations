@@ -5,11 +5,11 @@
 <h1>{data.query}</h1>
 
 <ul>
-	{#each data.associations.response as response}
+	{#each Object.entries(data.groupedByPos) as [key, items]}
 		<li>
-			{response.text}
+			{key}
 			<ul>
-				{#each response.items as item}
+				{#each items as item}
 					<li>
 						<a href="/{data.locale}/words/{item.item}">
 							{item.item}
@@ -20,5 +20,3 @@
 		</li>
 	{/each}
 </ul>
-
-<pre><code>{JSON.stringify(data.associations, null, 2)}</code></pre>

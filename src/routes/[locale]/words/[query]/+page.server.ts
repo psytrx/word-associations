@@ -11,14 +11,44 @@ apikey=<API key>
 
 import { WORDASSOCIATIONS_API_KEY } from '$env/static/private';
 
+interface AssociationsResponseItem {
+	text: string;
+	items: {
+		item: string;
+		weight: number;
+		pos: string;
+	}[];
+}
+
 export async function load({ params }) {
 	const associations = await getAssociations(params.query);
+	const groupedByPos = groupByPos(associations);
+
+	groupedByPos['verb']?.forEach((item) => {
+		item.item = item.item.toLowerCase();
+	});
+	groupedByPos['adjective']?.forEach((item) => {
+		item.item = item.item.toLowerCase();
+	});
 
 	return {
 		locale: params.locale,
 		query: params.query,
-		associations
+		groupedByPos
 	};
+}
+
+function groupByPos(item: AssociationsResponseItem) {
+	// const groups = [{ key: 'foo', items: associations.items }];
+
+	const groups: Record<string, AssociationsResponseItem['items']> = {};
+	item.items.forEach((item) => {
+		const groupItems = groups[item.pos] || [];
+		groupItems.push(item);
+		groups[item.pos] = groupItems;
+	});
+
+	return groups;
 }
 
 async function getAssociations(query: string) {
@@ -37,14 +67,8 @@ async function getAssociations(query: string) {
 	}
 
 	const json = await res.json();
-	return json as {
-		response: {
-			text: string;
-			items: {
-				item: string;
-				weight: number;
-				pos: string;
-			}[];
-		}[];
+	const items = json as {
+		response: AssociationsResponseItem[];
 	};
+	return items.response[0];
 }
