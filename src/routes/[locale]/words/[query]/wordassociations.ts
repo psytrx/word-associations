@@ -1,4 +1,5 @@
 import { WORDASSOCIATIONS_API_KEY } from '$env/static/private';
+import { createKeyValueCache } from '$lib/cache';
 
 export interface AssociationsResponseItem {
   text: string;
@@ -9,7 +10,13 @@ export interface AssociationsResponseItem {
   }[];
 }
 
+const cache = createKeyValueCache<AssociationsResponseItem>();
+
 export async function getAssociations(query: string) {
+  if (cache.get(query)) {
+    return cache.get(query);
+  }
+
   const params = new URLSearchParams({
     apikey: WORDASSOCIATIONS_API_KEY,
     text: query,
@@ -28,5 +35,8 @@ export async function getAssociations(query: string) {
   const items = json as {
     response: AssociationsResponseItem[];
   };
+
+  cache.set(query, items.response[0]);
+
   return items.response[0];
 }
